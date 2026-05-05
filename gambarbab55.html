@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Gambar bab 55</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Gambarbab55</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian EPS-TOPIK - 64 Soal</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --light: #f4f7f6;
+            --active-border: #8e44ad; /* Warna Ungu */
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #quiz-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        #main-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 800px) {
+            #main-container { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        #timer { font-size: 1.5rem; font-weight: bold; color: var(--danger); }
+
+        .question-text { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.6; }
+
+        .options-container { display: grid; gap: 10px; }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+
+        .option.selected { background-color: #e1f5fe; border-color: var(--accent); }
+        .correct-ans { border-color: var(--accent) !important; background-color: #e1f5fe !important; font-weight: bold; }
+        .wrong-ans { border-color: var(--danger) !important; background-color: #fdeaea !important; color: var(--danger); }
+
+        /* Navigation Grid */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        /* Border Ungu Tebal untuk nomor yang sedang dikerjakan */
+        .nav-item.active { 
+            border: 4px solid var(--active-border) !important; 
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .nav-item.filled { background-color: #d1d8e0; }
+        
+        /* Nav colors after submit */
+        .nav-correct { background-color: var(--accent) !important; color: white; border-color: var(--accent); }
+        .nav-wrong { background-color: var(--warning) !important; color: black; border-color: var(--warning); }
+
+        .controls { display: flex; justify-content: space-between; margin-top: 20px; }
+        
+        button {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-prev { background: #95a5a6; color: white; }
+        .btn-next { background: var(--accent); color: white; }
+        .btn-submit { background: var(--success); color: white; width: 100%; margin-top: 10px; font-size: 1.1rem; }
+        button:disabled { opacity: 0.3; }
+
+        u { text-underline-offset: 4px; text-decoration-thickness: 2px; }
+    </style>
+</head>
+<body>
+
+<div id="quiz-wrapper">
+    <div class="card" style="text-align: center;">
+        <div id="timer">30:00</div>
+    </div>
+
+    <div id="main-container">
+        <div class="card">
+            <div class="header">
+                <span id="q-label" style="font-weight:bold; color:var(--primary);">Soal</span>
+            </div>
+            <div id="q-text" class="question-text"></div>
+            <div id="options-box" class="options-container"></div>
+            
+            <div class="controls">
+                <button class="btn-prev" id="prev-btn" onclick="move(-1)">Sebelumnya</button>
+                <button class="btn-next" id="next-btn" onclick="move(1)">Berikutnya</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top:0; font-size: 1rem;">Navigasi Soal</h3>
+            <div class="nav-grid" id="nav-grid"></div>
+            <button class="btn-submit" id="submit-btn" onclick="finish()">SUBMIT</button>
+            <div id="result-box" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const rawData = [
+{ q: "1.jpg", a: ["안전모", "안전화", "안전대", "작업복"], c: 0 },
+{ q: "2.jpg", a: ["안전모", "안전화", "안전대", "작업복"], c: 1 },
+{ q: "3.jpg", a: ["안전모", "안전화", "안전대", "작업복"], c: 2 },
+{ q: "4.jpg", a: ["안전모", "안전화", "안전대", "작업복"], c: 3 },
+{ q: "5.jpg", a: ["안전장갑", "구명조끼", "농약 방제복", "축산 작업복"], c: 0 },
+{ q: "6.jpg", a: ["안전장갑", "구명조끼", "농약 방제복", "축산 작업복"], c: 1 },
+{ q: "7.jpg", a: ["안전장갑", "구명조끼", "농약 방제복", "축산 작업복"], c: 2 },
+{ q: "8.jpg", a: ["안전장갑", "구명조끼", "농약 방제복", "축산 작업복"], c: 3 },
+{ q: "9.jpg", a: ["안면 보호구", "방진 마스크", "방독 마스크", "송기 마스크"], c: 0 },
+{ q: "10.jpg", a: ["안면 보호구", "방진 마스크", "방독 마스크", "송기 마스크"], c: 1 },
+{ q: "11.jpg", a: ["안면 보호구", "방진 마스크", "방독 마스크", "송기 마스크"], c: 2 },
+{ q: "12.jpg", a: ["안면 보호구", "방진 마스크", "방독 마스크", "송기 마스크"], c: 3 },
+{ q: "13.jpg", a: ["용접면", "보안경", "귀마개", "귀덮개"], c: 0 },
+{ q: "14.jpg", a: ["용접면", "보안경", "귀마개", "귀덮개"], c: 1 },
+{ q: "15.jpg", a: ["용접면", "보안경", "귀마개", "귀덮개"], c: 2 },
+{ q: "16.jpg", a: ["용접면", "보안경", "귀마개", "귀덮개"], c: 3 },
+{ q: "17.jpg", a: ["무릎보호대", "오븐 장갑", "절단방지 장갑", "방수 앞치마"], c: 0 },
+{ q: "18.jpg", a: ["무릎보호대", "오븐 장갑", "절단방지 장갑", "방수 앞치마"], c: 1 },
+{ q: "19.jpg", a: ["무릎보호대", "오븐 장갑", "절단방지 장갑", "방수 앞치마"], c: 2 },
+{ q: "20.jpg", a: ["무릎보호대", "오븐 장갑", "절단방지 장갑", "방수 앞치마"], c: 3 },
+{ q: "21.jpg", a: ["LED 램프", "절연 안전모", "절연 장화", "절연 장갑"], c: 0 },
+{ q: "22.jpg", a: ["LED 램프", "절연 안전모", "절연 장화", "절연 장갑"], c: 1 },
+{ q: "23.jpg", a: ["LED 램프", "절연 안전모", "절연 장화", "절연 장갑"], c: 2 },
+{ q: "24.jpg", a: ["LED 램프", "절연 안전모", "절연 장화", "절연 장갑"], c: 3 },
+{ q: "25.jpg", a: ["위생복", "위생장갑", "위생마스크", "위생모"], c: 0 },
+{ q: "26.jpg", a: ["위생장화", "위생복", "위생마스크", "위생장갑"], c: 1 },
+{ q: "27.jpg", a: ["위생장갑", "위생복", "위생장화", "위생모"], c: 2 },
+{ q: "28.jpg", a: ["위생모", "위생복", "위생장화", "위생장갑"], c: 0 },
+{ q: "29.jpg", a: ["위생마스크", "위생모", "위생장화", "위생복"], c: 0 },
+{ q: "30.jpg", a: ["방열하의", "방열상의", "방열두건", "방열장화"], c: 0 },
+{ q: "31.jpg", a: ["방열두건", "방열상의", "방열장갑", "방열장화"], c: 0 },
+{ q: "32.jpg", a: ["방열하의", "방열상의", "방열두건", "방열장화"], c: 1 },
+{ q: "33.jpg", a: ["방열장갑", "방열하의", "방열상의", "방열장화"], c: 0 },
+{ q: "34.jpg", a: ["방열장화", "방열하의", "방열상의", "방열장갑"], c: 0 },
+{ q: "35.jpg", a: ["일반적인 강제 행동 표지", "사용설명서/책자를 참조하시오", "귀마개(청각 보호기)를 착용하시오", "보안경(눈 보호기)을 착용하시오"], c: 0 },
+{ q: "36.jpg", a: ["일반적인 강제 행동 표지", "사용설명서/책자를 참조하시오", "귀마개(청각 보호기)를 착용하시오", "보안경(눈 보호기)을 착용하시오"], c: 1 },
+{ q: "37.jpg", a: ["일반적인 강제 행동 표지", "사용설명서/책자를 참조하시오", "귀마개(청각 보호기)를 착용하시오", "보안경(눈 보호기)을 착용하시오"], c: 2 },
+{ q: "38.jpg", a: ["일반적인 강제 행동 표지", "사용설명서/책자를 참조하시오", "귀마개(청각 보호기)를 착용하시오", "보안경(눈 보호기)을 착용하시오"], c: 3 },
+{ q: "39.jpg", a: ["안전화를 착용하시오", "보호 장갑을 착용하시오", "방호복을 착용하시오", "손을 씻으시오"], c: 0 },
+{ q: "40.jpg", a: ["안전화를 착용하시오", "보호 장갑을 착용하시오", "방호복을 착용하시오", "손을 씻으시오"], c: 1 },
+{ q: "41.jpg", a: ["안전화를 착용하시오", "보호 장갑을 착용하시오", "방호복을 착용하시오", "손을 씻으시오"], c: 2 },
+{ q: "42.jpg", a: ["안전화를 착용하시오", "보호 장갑을 착용하시오", "방호복을 착용하시오", "손을 씻으시오"], c: 3 },
+{ q: "43.jpg", a: ["가시성이 높은 옷을 착용하시오", "머리 보호구를 착용하시오", "마스크를 착용하시오", "호흡기 보호 장치를 착용하시오"], c: 0 },
+{ q: "44.jpg", a: ["가시성이 높은 옷을 착용하시오", "머리 보호구를 착용하시오", "마스크를 착용하시오", "호흡기 보호 장치를 착용하시오"], c: 1 },
+{ q: "45.jpg", a: ["가시성이 높은 옷을 착용하시오", "머리 보호구를 착용하시오", "마스크를 착용하시오", "호흡기 보호 장치를 착용하시오"], c: 2 },
+{ q: "46.jpg", a: ["가시성이 높은 옷을 착용하시오", "머리 보호구를 착용하시오", "마스크를 착용하시오", "호흡기 보호 장치를 착용하시오"], c: 3 },
+{ q: "47.jpg", a: ["안전벨트를 착용하시오", "이 통로를 이용하시오", "보호용 앞치마를 착용하시오", "잠그시오"], c: 0 },
+{ q: "48.jpg", a: ["안전벨트를 착용하시오", "이 통로를 이용하시오", "보호용 앞치마를 착용하시오", "잠그시오"], c: 1 },
+{ q: "49.jpg", a: ["안전벨트를 착용하시오", "이 통로를 이용하시오", "보호용 앞치마를 착용하시오", "잠그시오"], c: 2 },
+{ q: "50.jpg", a: ["안전벨트를 착용하시오", "이 통로를 이용하시오", "보호용 앞치마를 착용하시오", "잠그시오"], c: 3 },
+{ q: "51.jpg", a: ["전기 플러그를 콘센트에서 분리하시오", "불투명 보안대를 반드시 착용하시오", "손잡이를 사용하시오", "얼굴 보호구를 착용하시오"], c: 0 },
+{ q: "52.jpg", a: ["전기 플러그를 콘센트에서 분리하시오", "불투명 보안대를 반드시 착용하시오", "손잡이를 사용하시오", "얼굴 보호구를 착용하시오"], c: 1 },
+{ q: "53.jpg", a: ["전기 플러그를 콘센트에서 분리하시오", "불투명 보안대를 반드시 착용하시오", "손잡이를 사용하시오", "얼굴 보호구를 착용하시오"], c: 2 },
+{ q: "54.jpg", a: ["전기 플러그를 콘센트에서 분리하시오", "불투명 보안대를 반드시 착용하시오", "손잡이를 사용하시오", "얼굴 보호구를 착용하시오"], c: 3 },
+{ q: "55.jpg", a: ["안전띠를 착용하시오", "용접 마스크를 착용하시오", "경적을 울리시오", "쓰레기통을 사용하시오"], c: 0 },
+{ q: "56.jpg", a: ["안전띠를 착용하시오", "용접 마스크를 착용하시오", "경적을 울리시오", "쓰레기통을 사용하시오"], c: 1 },
+{ q: "57.jpg", a: ["안전띠를 착용하시오", "용접 마스크를 착용하시오", "경적을 울리시오", "쓰레기통을 사용하시오"], c: 2 },
+{ q: "58.jpg", a: ["안전띠를 착용하시오", "용접 마스크를 착용하시오", "경적을 울리시오", "쓰레기통을 사용하시오"], c: 3 },
+{ q: "59.jpg", a: ["특정 행동을 해야 한다는 것을 알리기 위해 사용하는 표지", "전기플러그를 콘센트에서 빼십시오.", "불투명한 고글이나 안경을 꼭 쓰십시오.", "멀리서도 잘 보이는 반사 조끼를 입으십시오."], c: 0 },
+{ q: "60.jpg", a: ["특정 행동을 해야 한다는 것을 알리기 위해 사용하는 표지", "전기플러그를 콘센트에서 빼십시오.", "불투명한 고글이나 안경을 꼭 쓰십시오.", "멀리서도 잘 보이는 반사 조끼를 입으십시오."], c: 1 },
+{ q: "61.jpg", a: ["불투명한 고글이나 안경을 꼭 쓰십시오.", "멀리서도 잘 보이는 반사 조끼를 입으십시오.", "이 길로 다니십시오.", "경고음을 내십시오."], c: 0 },
+{ q: "62.jpg", a: ["불투명한 고글이나 안경을 꼭 쓰십시오.", "멀리서도 잘 보이는 반사 조끼를 입으십시오.", "이 길로 다니십시오.", "경고음을 내십시오."], c: 1 },
+{ q: "63.jpg", a: ["이 길로 다니십시오.", "경고음을 내십시오.", "특정 행동 표지", "전기플러그 분리"], c: 0 },
+{ q: "64.jpg", a: ["이 길로 다니십시오.", "경고음을 내십시오.", "특정 행동 표지", "전기플러그 분리"], c: 1 },
+];
+
+    let questions = [];
+    let userAnswers = new Array(rawData.length).fill(null);
+    let currentIdx = 0;
+    let isSubmitted = false;
+    let timerValue = 30 * 60;
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function init() {
+        questions = shuffle([...rawData]).map(item => {
+            const options = item.a.map((txt, i) => ({ text: txt, correct: i === item.c }));
+            return { q: item.q, options: shuffle(options) };
+        });
+        
+        renderNav();
+        renderQuestion();
+        startTimer();
+    }
+
+    function renderNav() {
+        const nav = document.getElementById('nav-grid');
+        nav.innerHTML = '';
+        questions.forEach((_, i) => {
+            const item = document.createElement('div');
+            item.className = 'nav-item';
+            item.innerText = i + 1;
+            
+            if (i === currentIdx) item.classList.add('active');
+            if (userAnswers[i] !== null) item.classList.add('filled');
+            
+            if (isSubmitted) {
+                const isCorrect = userAnswers[i] !== null && questions[i].options[userAnswers[i]].correct;
+                item.classList.add(isCorrect ? 'nav-correct' : 'nav-wrong');
+            }
+
+            item.onclick = () => { currentIdx = i; renderQuestion(); renderNav(); };
+            nav.appendChild(item);
+        });
+    }
+
+    function renderQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('q-label').innerText = `Soal Nomor ${currentIdx + 1}`;
+        const isImage = q.q.includes('.jpg');
+
+if (isImage) {
+    document.getElementById('q-text').innerHTML =
+        `<img src="assets/img/${q.q}" style="max-width:100%; border-radius:10px;">`;
+} else {
+    document.getElementById('q-text').innerHTML = q.q;
+}
+        const box = document.getElementById('options-box');
+        box.innerHTML = '';
+
+        q.options.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            if (userAnswers[currentIdx] === i) div.classList.add('selected');
+
+            if (isSubmitted) {
+                if (opt.correct) div.classList.add('correct-ans');
+                else if (userAnswers[currentIdx] === i) div.classList.add('wrong-ans');
+            } else {
+                div.onclick = () => { 
+                    userAnswers[currentIdx] = i; 
+                    renderQuestion(); 
+                    renderNav();
+                };
+            }
+
+            const symbols = ['①', '②', '③', '④'];
+            div.innerHTML = `${symbols[i]} ${opt.text}`;
+            box.appendChild(div);
+        });
+
+        document.getElementById('prev-btn').disabled = (currentIdx === 0);
+        document.getElementById('next-btn').disabled = (currentIdx === rawData.length - 1);
+    }
+
+    function move(step) {
+        currentIdx += step;
+        renderQuestion();
+        renderNav();
+    }
+
+    function startTimer() {
+        const timerEl = document.getElementById('timer');
+        const interval = setInterval(() => {
+            if (isSubmitted) { clearInterval(interval); return; }
+            let m = Math.floor(timerValue / 60);
+            let s = timerValue % 60;
+            timerEl.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if (timerValue <= 0) { clearInterval(interval); finish(); }
+            timerValue--;
+        }, 1000);
+    }
+
+    function finish() {
+        if (isSubmitted) return;
+        if (timerValue > 0 && !confirm("Apakah Anda yakin ingin mensubmit semua jawaban?")) return;
+
+        isSubmitted = true;
+        let correctCount = 0;
+        questions.forEach((q, idx) => {
+            if (userAnswers[idx] !== null && q.options[userAnswers[idx]].correct) correctCount++;
+        });
+
+        const percent = ((correctCount / rawData.length) * 100).toFixed(1);
+        
+        document.getElementById('result-box').innerHTML = `
+            <div style="color:var(--primary); font-size:1.2rem;">Skor Akhir:</div>
+            <div style="font-size:2rem; color:var(--success);">${correctCount} / 64</div>
+            <div style="font-size:1.5rem;">(${percent}%)</div>
+        `;
+
+        document.getElementById('submit-btn').disabled = true;
+        renderQuestion();
+        renderNav();
+    }
+
+    init();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
